@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
-import { Stack, usePathname, useSegments } from 'expo-router';
+import { Tabs, usePathname, useSegments } from 'expo-router';
 
 const dbg = (hypothesisId: string, location: string, message: string, data: Record<string, unknown>) => {
   const payload = JSON.stringify({
@@ -19,29 +19,27 @@ const dbg = (hypothesisId: string, location: string, message: string, data: Reco
   // #endregion
 };
 
-dbg('B', 'app/_layout.tsx:module', 'Root layout module evaluated', {
+dbg('A', 'app/tabs/_layout.tsx:module', 'Tabs layout module evaluated', {
   os: Platform.OS,
-  declaredScreen: '(tabs)',
-  actualFolder: 'tabs',
+  folder: 'tabs',
 });
 
-export default function RootLayout() {
+export default function TabLayout() {
   const pathname = usePathname();
   const segments = useSegments();
 
   useEffect(() => {
-    dbg('A', 'app/_layout.tsx:mount', 'Root Stack mounted', {
+    dbg('A', 'app/tabs/_layout.tsx:mount', 'Tabs layout mounted', {
       os: Platform.OS,
       pathname,
       segments,
-      declaredScreen: '(tabs)',
-      actualFolder: 'tabs',
     });
   }, [pathname, segments]);
 
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <Tabs>
+      <Tabs.Screen name="index" options={{ title: 'Home' }} />
+      <Tabs.Screen name="about" options={{ title: 'About' }} />
+    </Tabs>
   );
 }

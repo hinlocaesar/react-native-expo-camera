@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { Platform } from 'react-native';
-import { Stack, usePathname, useSegments } from 'expo-router';
+import { Text, View, StyleSheet, Platform } from 'react-native';
+import { Link, usePathname } from 'expo-router';
 
 const dbg = (hypothesisId: string, location: string, message: string, data: Record<string, unknown>) => {
   const payload = JSON.stringify({
@@ -19,29 +19,40 @@ const dbg = (hypothesisId: string, location: string, message: string, data: Reco
   // #endregion
 };
 
-dbg('B', 'app/_layout.tsx:module', 'Root layout module evaluated', {
-  os: Platform.OS,
-  declaredScreen: '(tabs)',
-  actualFolder: 'tabs',
-});
-
-export default function RootLayout() {
+export default function Index() {
   const pathname = usePathname();
-  const segments = useSegments();
 
   useEffect(() => {
-    dbg('A', 'app/_layout.tsx:mount', 'Root Stack mounted', {
+    dbg('C', 'app/tabs/index.tsx:mount', 'Tabs Home mounted', {
       os: Platform.OS,
       pathname,
-      segments,
-      declaredScreen: '(tabs)',
-      actualFolder: 'tabs',
+      marker: 'tabs-home-v1',
     });
-  }, [pathname, segments]);
+  }, [pathname]);
 
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <View style={styles.container}>
+      <Text style={styles.text}>Home screen</Text>
+      <Link href="/about" style={styles.button}>
+        Go to About screen
+      </Link>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#25292e',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    color: '#fff',
+  },
+  button: {
+    fontSize: 20,
+    textDecorationLine: 'underline',
+    color: '#fff',
+  },
+});
